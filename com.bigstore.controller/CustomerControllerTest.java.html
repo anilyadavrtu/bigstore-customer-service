@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerControllerTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bigstore_customer_service$CustomerControllerTest_update.exec</a> &gt; <a href="index.source.html" class="el_package">com.bigstore.controller</a> &gt; <span class="el_source">CustomerControllerTest.java</span></div><h1>CustomerControllerTest.java</h1><pre class="source lang-java linenums">package com.bigstore.controller;
+
+
+import com.bigstore.datatransferobject.CustomerDTO;
+import com.bigstore.domainobject.CustomerDO;
+import com.bigstore.exception.EntityNotFoundException;
+import com.bigstore.service.CustomerService;
+import com.bigstore.service.SequenceGeneratorService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.mockito.ArgumentMatchers.any;
+
+/**
+ * @author anil
+ * unit test CustomerControllerTest to test the customerController
+ */
+@RunWith(SpringRunner.class)
+@WebMvcTest(CustomerController.class)
+<span class="fc" id="L34">public class CustomerControllerTest {</span>
+<span class="fc" id="L35">    private static final Logger log = LoggerFactory.getLogger(CustomerControllerTest.class);</span>
+<span class="fc" id="L36">    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();</span>
+
+    @Autowired
+    public MockMvc mockMvc;
+
+    @MockBean
+    public CustomerService customerService;
+
+    @MockBean
+    public SequenceGeneratorService sequenceGeneratorService;
+
+    @Test
+    public void find() throws Exception {
+<span class="nc" id="L49">        log.info(&quot;CustomerControllerTest:find&quot;);</span>
+<span class="nc" id="L50">        CustomerDO customerDO = new CustomerDO(0L, &quot;Anil&quot;, &quot;Yadav&quot;, &quot;anil.yadav@gmail.com&quot;, &quot;999999999&quot;);</span>
+<span class="nc" id="L51">        Mockito.doReturn(customerDO).when(customerService).find(0L);</span>
+<span class="nc" id="L52">        mockMvc.perform(MockMvcRequestBuilders.get(&quot;/v1/customer/0&quot;))</span>
+<span class="nc" id="L53">                .andExpect(MockMvcResultMatchers.status().isOk())</span>
+<span class="nc" id="L54">                .andDo(MockMvcResultHandlers.print())</span>
+<span class="nc" id="L55">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;firstName&quot;).value(&quot;Anil&quot;))</span>
+<span class="nc" id="L56">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;lastName&quot;).value(&quot;Yadav&quot;))</span>
+<span class="nc" id="L57">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;email&quot;).value(&quot;anil.yadav@gmail.com&quot;));</span>
+<span class="nc" id="L58">    }</span>
+
+    @Test
+    public void create() throws Exception {
+<span class="nc" id="L62">        log.info(&quot;CustomerControllerTest:create&quot;);</span>
+<span class="nc" id="L63">        CustomerDO customerDO = new CustomerDO(1L, &quot;Anil&quot;, &quot;Yadav&quot;, &quot;anil.yadav@gmail.com&quot;, &quot;999999999&quot;);</span>
+<span class="nc" id="L64">        Mockito.doReturn(customerDO).when(customerService).create(any(CustomerDO.class));</span>
+<span class="nc" id="L65">        mockMvc.</span>
+<span class="nc" id="L66">                perform(MockMvcRequestBuilders.post(&quot;/v1/customer&quot;)</span>
+<span class="nc" id="L67">                        .accept(MediaType.APPLICATION_JSON)</span>
+<span class="nc" id="L68">                        .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="nc" id="L69">                        .content(OBJECT_MAPPER.writeValueAsString(customerDO)))</span>
+<span class="nc" id="L70">                .andExpect(MockMvcResultMatchers.status().isCreated())</span>
+<span class="nc" id="L71">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;firstName&quot;).value(&quot;Anil&quot;))</span>
+<span class="nc" id="L72">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;lastName&quot;).value(&quot;Yadav&quot;))</span>
+<span class="nc" id="L73">                .andExpect(MockMvcResultMatchers.jsonPath(&quot;email&quot;).value(&quot;anil.yadav@gmail.com&quot;));</span>
+<span class="nc" id="L74">    }</span>
+
+    @Test
+    public void delete() throws Exception {
+<span class="nc" id="L78">        log.info(&quot;CustomerControllerTest : delete&quot;);</span>
+<span class="nc" id="L79">        Mockito.doNothing().when(customerService).delete(0L);</span>
+<span class="nc" id="L80">        mockMvc.perform(MockMvcRequestBuilders.delete(&quot;/v1/customer/{customerId}&quot;, &quot;1&quot;))</span>
+<span class="nc" id="L81">                .andExpect(MockMvcResultMatchers.status().isOk());</span>
+<span class="nc" id="L82">    }</span>
+
+    @Test
+    public void update() throws Exception {
+<span class="fc" id="L86">        log.info(&quot;CustomerControllerTest : update&quot;);</span>
+<span class="fc" id="L87">        CustomerDO customerDO = new CustomerDO(0L, &quot;Anil&quot;, &quot;Yadav&quot;, &quot;sach@gmail.com&quot;, &quot;999999999&quot;);</span>
+<span class="fc" id="L88">        CustomerDTO customerDTO = new CustomerDTO(0L, &quot;Anil&quot;, &quot;Yadav&quot;, &quot;sach@gmail.com&quot;, &quot;999999999&quot;);</span>
+<span class="fc" id="L89">        Mockito.doReturn(customerDO).when(customerService).update(any(CustomerDO.class));</span>
+<span class="fc" id="L90">        mockMvc.perform(MockMvcRequestBuilders.put(&quot;/v1/customer/{email}&quot;,&quot;sach@gmail.com&quot;)</span>
+<span class="fc" id="L91">        .content(OBJECT_MAPPER.writeValueAsString(customerDTO))</span>
+<span class="fc" id="L92">        .accept(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L93">        .contentType(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L94">                .andExpect(MockMvcResultMatchers.status().isOk())</span>
+<span class="nc" id="L95">        .andExpect(MockMvcResultMatchers.jsonPath(&quot;firstName&quot;).value(&quot;Anil&quot;));</span>
+<span class="nc" id="L96">    }</span>
+
+  /*   @Test
+    public void findByEmail() {
+    }
+
+    @Test
+    public void findAll() {
+    }*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

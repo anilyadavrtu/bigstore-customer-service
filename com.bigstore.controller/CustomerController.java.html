@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bigstore_customer_service$CustomerControllerTest_update.exec</a> &gt; <a href="index.source.html" class="el_package">com.bigstore.controller</a> &gt; <span class="el_source">CustomerController.java</span></div><h1>CustomerController.java</h1><pre class="source lang-java linenums">package com.bigstore.controller;
+
+import com.bigstore.datatransferobject.CustomerDTO;
+import com.bigstore.domainobject.CustomerDO;
+import com.bigstore.exception.ConstraintsViolationException;
+import com.bigstore.exception.EntityNotFoundException;
+import com.bigstore.mapper.CustomerMapper;
+import com.bigstore.service.CustomerService;
+import com.bigstore.service.SequenceGeneratorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * @author anil
+ */
+@RestController
+@RequestMapping(&quot;v1/customer&quot;)
+public class CustomerController {
+<span class="fc" id="L25">    private static final Logger log = LoggerFactory.getLogger(CustomerController.class);</span>
+
+    /**
+     * customerService : to perform the customer baseness operations
+     */
+
+    private CustomerService customerService;
+    /**
+     * customerMapper : to convert DTO to DO and DTO to DTO
+     */
+
+
+    private SequenceGeneratorService generateSequence;
+
+    @Autowired
+<span class="fc" id="L40">    public CustomerController(CustomerService customerService,SequenceGeneratorService generateSequence) {</span>
+<span class="fc" id="L41">        this.customerService = customerService;</span>
+<span class="fc" id="L42">        this.generateSequence = generateSequence;</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * @param customerId
+     * @return
+     * @throws EntityNotFoundException
+     */
+    @GetMapping(&quot;/{customerId}&quot;)
+    public CustomerDTO find(@PathVariable long customerId) throws EntityNotFoundException {
+<span class="nc" id="L52">        log.info(&quot;CustomerController : findCustomer&quot;);</span>
+<span class="nc" id="L53">        CustomerDO customerDO = customerService.find(customerId);</span>
+<span class="nc" id="L54">        customerDO.setId(customerId);</span>
+<span class="nc" id="L55">        return CustomerMapper.makeCustomerDTO(customerDO);</span>
+    }
+
+     /**
+     * @param customerDTO
+     * @return
+     * @throws ConstraintsViolationException
+     */
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustomerDTO create(@RequestBody CustomerDTO customerDTO) throws ConstraintsViolationException {
+<span class="nc" id="L66">        log.info(&quot;CustomerController : createCustomer&quot;);</span>
+<span class="nc" id="L67">        customerDTO.setId(generateSequence.generateSequence(CustomerDO.SEQUENCE_NAME));</span>
+<span class="nc" id="L68">        CustomerDO customerDO = customerService.create(CustomerMapper.makeCustomerDO(customerDTO));</span>
+<span class="nc" id="L69">        return CustomerMapper.makeCustomerDTO(customerDO);</span>
+    }
+
+    /**
+     * @param customerId
+     * @throws EntityNotFoundException
+     */
+    @DeleteMapping(&quot;/{customerId}&quot;)
+    public void delete(@PathVariable long customerId) throws EntityNotFoundException {
+<span class="nc" id="L78">        log.info(&quot;CustomerController : delete&quot;);</span>
+<span class="nc" id="L79">        customerService.delete(customerId);</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * @param customerDTO
+     * @return
+     * @throws EntityNotFoundException
+     */
+    @PutMapping(&quot;/{email}&quot;)
+    public CustomerDTO update(@PathVariable String email, @RequestBody CustomerDTO customerDTO) throws EntityNotFoundException {
+<span class="fc" id="L89">        log.info(&quot;CustomerController : update&quot;);</span>
+<span class="fc" id="L90">        CustomerDO customer = null;</span>
+<span class="fc" id="L91">        CustomerDO customerDO = customerService.findByEmail(email);</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (customerDO != null) {</span>
+<span class="nc" id="L93">            customerDTO.setId(customerDO.getId());</span>
+<span class="nc" id="L94">            customer = customerService.update(CustomerMapper.makeCustomerDO(customerDTO));</span>
+        }
+<span class="fc" id="L96">        return CustomerMapper.makeCustomerDTO(customer);</span>
+    }
+
+    /**
+     * @param email
+     * @return
+     * @throws EntityNotFoundException
+     */
+    @GetMapping(value = &quot;/email&quot;)
+    public CustomerDTO findByEmail(@RequestParam String email) throws EntityNotFoundException {
+<span class="nc" id="L106">        log.info(&quot;CustomerController : findByEmail&quot;);</span>
+<span class="nc" id="L107">        return CustomerMapper.makeCustomerDTO(customerService.findByEmail(email));</span>
+    }
+
+    /**
+     * findAll
+     * * @return
+     */
+    @GetMapping
+    public List&lt;CustomerDTO&gt; findAll() {
+<span class="nc" id="L116">        log.info(&quot;CustomerController : findAll&quot;);</span>
+<span class="nc" id="L117">        List&lt;CustomerDO&gt; customers = customerService.getAllCustomers();</span>
+<span class="nc" id="L118">        return customers.stream().map(CustomerMapper::makeCustomerDTO).collect(Collectors.toList());</span>
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
