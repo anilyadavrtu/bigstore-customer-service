@@ -26,10 +26,10 @@ public interface CustomerService {
     CustomerDO create(CustomerDO customerDO) throws ConstraintsViolationException;
 
     /**
-     * @param CustomerId
+     * @param customerId
      * @throws EntityNotFoundException
      */
-    void delete(Long CustomerId) throws EntityNotFoundException;
+    void delete(Long customerId) throws EntityNotFoundException;
 
     /**
      * @param customerDO

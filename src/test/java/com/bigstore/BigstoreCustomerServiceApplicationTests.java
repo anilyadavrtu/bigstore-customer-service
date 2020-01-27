@@ -9,8 +9,4 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest(classes = BigstoreCustomerServiceApplication.class)
 class BigstoreCustomerServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
 }

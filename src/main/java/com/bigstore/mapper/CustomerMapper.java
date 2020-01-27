@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CustomerMapper {
-
-    public CustomerMapper() {
-    }
+    
     public static CustomerDTO makeCustomerDTO(CustomerDO customerDO) {
         if(customerDO!=null){
            return new CustomerDTO(customerDO.getId(), customerDO.getFirstName(), customerDO.getLastName(), customerDO.getEmail(), customerDO.getPhoneNumber());
