@@ -38,7 +38,7 @@ public class CustomerController {
     private final SequenceGeneratorService generateSequence;
 
     @Autowired
-    public CustomerController(final CustomerService customerService,final SequenceGeneratorService generateSequence) {
+    public CustomerController(final CustomerService customerService, final SequenceGeneratorService generateSequence) {
         this.customerService = customerService;
         this.generateSequence = generateSequence;
     }
@@ -56,7 +56,7 @@ public class CustomerController {
         return CustomerMapper.makeCustomerDTO(customerDO);
     }
 
-     /**
+    /**
      * @param customerDTO
      * @return
      * @throws ConstraintsViolationException
@@ -118,7 +118,6 @@ public class CustomerController {
         List<CustomerDO> customers = customerService.getAllCustomers();
         return customers.stream().map(CustomerMapper::makeCustomerDTO).collect(Collectors.toList());
     }
-
 
 
 }

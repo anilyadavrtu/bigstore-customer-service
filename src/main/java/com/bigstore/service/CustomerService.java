@@ -13,14 +13,14 @@ import java.util.List;
 public interface CustomerService {
     /**
      * @param customerId
-     * @return
+     * @return CustomerDO
      * @throws EntityNotFoundException
      */
     CustomerDO find(long customerId) throws EntityNotFoundException;
 
     /**
      * @param customerDO
-     * @return
+     * @return CustomerDO
      * @throws com.bigstore.exception.ConstraintsViolationException
      */
     CustomerDO create(CustomerDO customerDO) throws ConstraintsViolationException;
@@ -34,18 +34,19 @@ public interface CustomerService {
     /**
      * @param customerDO
      * @throws EntityNotFoundException
+     * @return CustomerDO
      */
     CustomerDO update(CustomerDO customerDO) throws EntityNotFoundException;
 
     /**
      * @param email
-     * @return
+     * @return CustomerDO
      * @throws EntityNotFoundException
      */
     CustomerDO findByEmail(String email) throws EntityNotFoundException;
 
     /**
-     * @return
+     * @return List<CustomerDO>
      */
     List<CustomerDO> getAllCustomers();
 

@@ -12,9 +12,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "Customer")
 public class CustomerDO {
+
+    /**
+     * SEQUENCE_NAME
+     */
     @Transient
     public static final String SEQUENCE_NAME = "customer_sequence";
 
+    /**
+     * id
+     */
     @Id
     private Long id;
     /**
@@ -34,15 +41,13 @@ public class CustomerDO {
      */
     private String phoneNumber;
 
-    private CustomerDO() {
-    }
-
-    public CustomerDO(Long id,String firstName, String lastName, String email, String phoneNumber) {
+    public CustomerDO(final Long id, final String firstName,
+                      final String lastName, final String email, final String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.id=id;
+        this.id = id;
     }
 
 

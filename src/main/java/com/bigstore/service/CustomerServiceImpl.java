@@ -1,5 +1,6 @@
 package com.bigstore.service;
 
+import java.util.List;
 import com.bigstore.dataaccessobject.CustomerRepository;
 import com.bigstore.domainobject.CustomerDO;
 import com.bigstore.exception.ConstraintsViolationException;
@@ -10,22 +11,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Service to encapsulate the link between DAO and controller and to have business logic for some customer specific things.
  * <p/>
+ *
  * @author anil
  */
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
+    /**
+     * logger
+     */
+   private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
+
+    /**
+     * repository
+     */
     private CustomerRepository repository;
 
+    /**
+     * @param customerRepository
+     */
     @Autowired
-    public CustomerServiceImpl(CustomerRepository repository) {
-        this.repository = repository;
+    public CustomerServiceImpl(final CustomerRepository customerRepository) {
+        this.repository = customerRepository;
     }
 
     /**
@@ -36,19 +46,17 @@ public class CustomerServiceImpl implements CustomerService {
      * @throws EntityNotFoundException
      */
     @Override
-    public CustomerDO find(long customerId) throws EntityNotFoundException {
+    public CustomerDO find(final long customerId) throws EntityNotFoundException {
         return repository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Could not find the entity with id " + customerId));
     }
 
-    /**
-     * Add new Customer
-     *
+    /**Add new Customer
      * @param customerDO
      * @return
      * @throws ConstraintsViolationException
      */
     @Override
-    public CustomerDO create(CustomerDO customerDO) throws ConstraintsViolationException {
+    public CustomerDO create(final CustomerDO customerDO) throws ConstraintsViolationException {
         CustomerDO customer = null;
         try {
             customer = repository.save(customerDO);
@@ -64,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional
-    public void delete(Long customerId) throws EntityNotFoundException {
+    public void delete(final Long customerId) throws EntityNotFoundException {
         logger.info("CustomerServiceImpl: delete");
         repository.deleteById(customerId);
     }
@@ -75,26 +83,29 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional
-    public CustomerDO update(CustomerDO customerDO) {
+    public CustomerDO update(final CustomerDO customerDO) {
         logger.info("CustomerServiceImpl: update");
         repository.save(customerDO);
         return customerDO;
     }
 
-    /**findCustomerByEmail
+    /**
+     * findCustomerByEmail
+     *
      * @param email
      * @return
      * @throws EntityNotFoundException
      */
     @Override
-    public CustomerDO findByEmail(String email) throws EntityNotFoundException {
+    public CustomerDO findByEmail(final String email) throws EntityNotFoundException {
         logger.info("CustomerServiceImpl: findCustomerByEmail");
         return repository.findByEmail(email);
     }
 
     /**
      * getAllCustomers
-     * @return
+     *
+     * @return List<CustomerDO>
      */
     @Override
     public List<CustomerDO> getAllCustomers() {

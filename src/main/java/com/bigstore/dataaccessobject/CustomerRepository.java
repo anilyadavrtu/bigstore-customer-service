@@ -6,14 +6,18 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  * Database Access Object for Customer.
+ *
  * @author anil
  */
-public interface CustomerRepository extends MongoRepository<CustomerDO,Long> {
+public interface CustomerRepository extends MongoRepository<CustomerDO, Long> {
 
-    /**method to get the Customer By ID
-     * @param email
-     * @return
+    /**
+     * this
+     * method to get the Customer By ID
+     *
+     * @param email email
+     * @return CustomerDO
      */
-   CustomerDO findByEmail(String email);
+    CustomerDO findByEmail(String email);
 
 }

@@ -12,22 +12,31 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 /**
+ * SequenceGeneratorService
+ *
  * @author anil
  */
 @Service
 public class SequenceGeneratorService {
 
-    public SequenceGeneratorService() {
-    }
-
+    /**
+     * mongoOperations
+     */
     private MongoOperations mongoOperations;
 
+    /**
+     * @param mongoOperations
+     */
     @Autowired
-    public SequenceGeneratorService(MongoOperations mongoOperations) {
+    public SequenceGeneratorService(final MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
 
-    public long generateSequence(String seqName) {
+    /**
+     * @param seqName
+     * @return long
+     */
+    public long generateSequence(final String seqName) {
 
         DatabaseSequence counter = mongoOperations.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
                 new Update().inc("sequence", 1), FindAndModifyOptions.options().returnNew(true).upsert(true),
