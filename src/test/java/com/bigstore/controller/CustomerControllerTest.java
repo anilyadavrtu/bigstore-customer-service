@@ -48,7 +48,7 @@ public class CustomerControllerTest {
     @Test
     public void find() throws Exception {
         log.info("CustomerControllerTest:find");
-        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "anil.yadav@gmail.com", "999999999");
+        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "anil.yadav@gmail.com", 999999999);
         Mockito.doReturn(customerDO).when(customerService).find(0L);
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/customer/0"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -61,7 +61,7 @@ public class CustomerControllerTest {
     @Test
     public void create() throws Exception {
         log.info("CustomerControllerTest:create");
-        CustomerDO customerDO = new CustomerDO(1L, "Anil", "Yadav", "anil.yadav@gmail.com", "999999999");
+        CustomerDO customerDO = new CustomerDO(1L, "Anil", "Yadav", "anil.yadav@gmail.com", 999999999);
         Mockito.doReturn(customerDO).when(customerService).create(any(CustomerDO.class));
         mockMvc.
                 perform(MockMvcRequestBuilders.post("/v1/customer")
@@ -85,8 +85,8 @@ public class CustomerControllerTest {
     @Test
     public void update() throws Exception {
         log.info("CustomerControllerTest : update");
-        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", "999999999");
-        CustomerDTO customerDTO = new CustomerDTO(0L, "Anil", "Yadav", "sach@gmail.com", "999999999");
+        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", 999999999);
+        CustomerDTO customerDTO = new CustomerDTO(0L, "Anil", "Yadav", "sach@gmail.com", 999999999);
         Mockito.doReturn(customerDO).when(customerService).update(any(CustomerDO.class));
         mockMvc.perform(MockMvcRequestBuilders.put("/v1/customer/{email}", "sach@gmail.com")
                 .content(OBJECT_MAPPER.writeValueAsString(customerDTO))
@@ -100,7 +100,7 @@ public class CustomerControllerTest {
     @Test
     public void findByEmail() throws Exception {
         log.info("CustomerControllerTest :findByEmail");
-        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", "999999999");
+        CustomerDO customerDO = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", 999999999);
 
         Mockito.doReturn(customerDO).when(customerService).findByEmail("sach@gmail.com");
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/customer/email").param("email", "sach@gmail.com"))
@@ -112,9 +112,9 @@ public class CustomerControllerTest {
     @Test
     public void findAll() throws Exception {
         log.info("CustomerControllerTest : findAll");
-        CustomerDO customerDO1 = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", "999999991");
-        CustomerDO customerDO2 = new CustomerDO(1L, "Dev", "singh", "sach1@gmail.com", "999999992");
-        CustomerDO customerDO3 = new CustomerDO(2L, "Jack", "rayan", "sacc2@gmail.com", "999999993");
+        CustomerDO customerDO1 = new CustomerDO(0L, "Anil", "Yadav", "sach@gmail.com", 999999991);
+        CustomerDO customerDO2 = new CustomerDO(1L, "Dev", "singh", "sach1@gmail.com", 999999992);
+        CustomerDO customerDO3 = new CustomerDO(2L, "Jack", "rayan", "sacc2@gmail.com", 999999993);
         List<CustomerDO> customers = new ArrayList<>();
 
         customers.add(customerDO1);customers.add(customerDO2);customers.add(customerDO3);

@@ -30,7 +30,7 @@ public class CustomerDTO {
     /**
      * phoneNumber
      */
-    private String phoneNumber;
+    private Integer phoneNumber;
 
     /**
      * @param id id
@@ -40,7 +40,7 @@ public class CustomerDTO {
      * @param phoneNumber phoneNumber
      */
     public CustomerDTO(final Long id, final String firstName, final String lastName,
-                       final String email, final String phoneNumber) {
+                       final String email, final Integer phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

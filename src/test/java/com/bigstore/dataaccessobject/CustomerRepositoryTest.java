@@ -32,7 +32,7 @@ public class CustomerRepositoryTest {
     @Test
     public void findByEmail() {
         LOGGER.info("CustomerRepositoryTest: GET :findByEmail");
-        CustomerDO cusDO = new CustomerDO(1L, "Anil", "Yadav", "anil.yadav@gmail.com", "9090909090");
+        CustomerDO cusDO = new CustomerDO(1L, "Anil", "Yadav", "anil.yadav@gmail.com", 909090909);
         BasicDBObjectBuilder dbObjectBuilder = BasicDBObjectBuilder.start().add("cusData", cusDO);
         mongoTemplate.save(dbObjectBuilder, "cusCollection");
         Assertions.assertThat(mongoTemplate.findAll(DBObject.class, "cusCollection")).extracting("cusData").containsOnly(cusDO);

@@ -25,7 +25,7 @@ public class CustomerServiceImplTest {
     @Test
     public void findByEmail() {
         logger.info("CustomerServiceImplTest :findByEmail");
-        BDDMockito.doReturn(new CustomerDO(1L, "Anil", "Yadav", "anil@gmail.com", "9989898989"))
+        BDDMockito.doReturn(new CustomerDO(1L, "Anil", "Yadav", "anil@gmail.com", 998989898))
                 .when(repository).findByEmail("anil@gmail.com");
         CustomerDO customerDO = repository.findByEmail("anil@gmail.com");
         Assertions.assertThat(customerDO.getEmail()).isEqualTo("anil@gmail.com");

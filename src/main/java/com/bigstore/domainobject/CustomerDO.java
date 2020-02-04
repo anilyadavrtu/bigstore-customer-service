@@ -39,10 +39,10 @@ public class CustomerDO {
     /**
      * Customer phoneNumber
      */
-    private String phoneNumber;
+    private Integer phoneNumber;
 
     public CustomerDO(final Long id, final String firstName,
-                      final String lastName, final String email, final String phoneNumber) {
+                      final String lastName, final String email, final Integer phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
